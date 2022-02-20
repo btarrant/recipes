@@ -6,7 +6,7 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 
 class User:
-    db = "login_and_registration"
+    db_name = "login_and_registration"
 
     def __init__(self, data):
         self.id = data['id']
@@ -20,12 +20,12 @@ class User:
     @classmethod
     def save(cls, data):
         query = "INSERT INTO users (first_name,last_name,email,password) VALUES(%(first_name)s,%(last_name)s,%(email)s,%(password)s)"
-        return connectToMySQL(cls.db).query_db(query, data)
+        return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
     def get_all(cls):
         query = "SELECT * FROM users;"
-        results = connectToMySQL(cls.db).query_db(query)
+        results = connectToMySQL(cls.db_name).query_db(query)
         users = []
         for row in results:
             users.append(cls(row))
@@ -34,7 +34,7 @@ class User:
     @classmethod
     def get_by_email(cls, data):
         query = "SELECT * FROM users WHERE email = %(email)s;"
-        results = connectToMySQL(cls.db).query_db(query, data)
+        results = connectToMySQL(cls.db_name).query_db(query, data)
         if len(results) < 1:
             return False
         return cls(results[0])
@@ -42,14 +42,14 @@ class User:
     @classmethod
     def get_by_id(cls, data):
         query = "SELECT * FROM users WHERE id = %(id)s;"
-        results = connectToMySQL(cls.db).query_db(query, data)
+        results = connectToMySQL(cls.db_name).query_db(query, data)
         return cls(results[0])
 
     @staticmethod
     def validate_register(user):
         is_valid = True
         query = "SELECT * FROM users WHERE email = %(email)s;"
-        results = connectToMySQL(User.db).query_db(query, user)
+        results = connectToMySQL(User.db_name).query_db(query, user)
         if len(results) >= 1:
             flash("Email already taken.", "register")
             is_valid = False
