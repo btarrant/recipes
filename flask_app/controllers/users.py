@@ -15,6 +15,22 @@ def new_recipe():
     return render_template('new_recipe.html', user=User.get_by_id(data))
 
 
+@app.route('/create/recipe', methods=['POST'])
+def create_recipe():
+    if 'user_id' not in session:
+        return redirect('/logout')
+    if not Recipe.validate_recipe(request.form):
+        return redirect('/new/recipe')
+    data = {
+        "name": request.form["name"],
+        "description": request.form["description"],
+        "instructions": request.form["instructions"],
+        "under30": int(request.form["under30"]),
+        "date_made": request.form["date_made"],
+        "user_id": request.form["user_id"]
+    }
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
