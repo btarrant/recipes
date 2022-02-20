@@ -5,6 +5,16 @@ from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
 
+@app.route('/new/recipe')
+def new_recipe():
+    if 'user_id' not in session:
+        return redirect('/logout')
+    data = {
+        "id": session['user_id']
+    }
+    return render_template('new_recipe.html', user=User.get_by_id(data))
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -48,7 +58,7 @@ def dashboard():
     data = {
         'id': session['user_id']
     }
-    return render_template("dashboard.html", user=User.get_by_id(data))
+    return render_template("dashboard.html", user=User.get_by_id(data), recipes=Recipe.getall())
 
 
 @app.route('/logout')
