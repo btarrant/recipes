@@ -12,7 +12,7 @@ class Recipe:
         self.instructions = db_data['instructions']
         self.under30 = db_data['under30']
         self.date_made = db_data['date_made']
-        self.user_id = db_data['user_id']
+        self.user_id = db_data['users_id']
         self.created_at = db_data['created_at']
         self.updated_at = db_data['updated_at']
 
